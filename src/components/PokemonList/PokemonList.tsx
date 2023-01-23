@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react';
 import { usePokemonList } from '../../hooks/usePokemonList';
 import {
-  Header,
-  LogoWrapper,
   PokemonItemWrapper,
   PaginationWrapper,
-  PokemonItemTitle,
+  PokemonListWrapper,
 } from './PokemonList.styles';
 
-import logo from '../../assets/logo.png';
-import { Input } from '../Form/Input/Input';
 import { Pagination } from '../Pagination/Pagination';
 import { PokemonInfo } from '../PokemonInfo/PokemonInfo';
+import { useFavorite } from '../../context/Favorite/useFavorite';
+import { PokemonItem } from '../PokemonItem/PokemonItem';
 
 export const ROWS_PER_PAGE = 20;
 
 export function PokemonList() {
+  const { pokemons, toggleFavorite } = useFavorite();
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [expandedItem, setExpandedItem] = useState<null | number>(null);
   const { pokemonResult, isLoading, hasError, fetchPokemons } =
@@ -39,45 +38,60 @@ export function PokemonList() {
   }, [currentPage, fetchPokemons]);
 
   if (isLoading) {
-    return <h1>Loading...</h1>;
+    return (
+      <PokemonListWrapper>
+        <h1>Loading...</h1>
+      </PokemonListWrapper>
+    );
   }
 
   if (hasError) {
-    return <h1>Error...</h1>;
+    return (
+      <PokemonListWrapper>
+        <h1>Error...</h1>
+      </PokemonListWrapper>
+    );
   }
 
   if (!pokemonResult || !pokemonResult.results) {
-    return <h1>No data</h1>;
+    return (
+      <PokemonListWrapper>
+        <h1>No data</h1>
+      </PokemonListWrapper>
+    );
   }
 
   return (
-    <div>
-      <Header>
-        <LogoWrapper>
-          <img src={logo} className='App-logo' alt='logo' />
-        </LogoWrapper>
-        <div>
-          <Input type='text' />
-        </div>
-      </Header>
-      <div>
-        {pokemonResult.results.map((pokemonResult, index) => (
-          <PokemonItemWrapper key={pokemonResult.name} onClick={() => setExpandedItem(index)}>
-            <PokemonItemTitle>
-              {pokemonResult.name}
-            </PokemonItemTitle>
-            {expandedItem === index && <PokemonInfo pokemonName={pokemonResult.name} />}
+    <PokemonListWrapper>
+      {pokemonResult.results.map((pokemonResult, index) => {
+        const isFavorite = Boolean(
+          pokemons.find((pokemon) => pokemonResult.name === pokemon)
+        );
+
+        return (
+          <PokemonItemWrapper
+            key={pokemonResult.name}
+            onClick={() =>
+              setExpandedItem((currIndex) =>
+                index === currIndex ? null : index
+              )
+            }
+          >
+            <PokemonItem name={pokemonResult.name} isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
+            {expandedItem === index && (
+              <PokemonInfo pokemonName={pokemonResult.name} />
+            )}
           </PokemonItemWrapper>
-        ))}
-        <PaginationWrapper>
-          <Pagination
-            currentPage={currentPage}
-            rowsPerPage={ROWS_PER_PAGE}
-            totalItems={pokemonResult.count}
-            onPageChange={handlePageChange}
-          />
-        </PaginationWrapper>
-      </div>
-    </div>
+        );
+      })}
+      <PaginationWrapper>
+        <Pagination
+          currentPage={currentPage}
+          rowsPerPage={ROWS_PER_PAGE}
+          totalItems={pokemonResult.count}
+          onPageChange={handlePageChange}
+        />
+      </PaginationWrapper>
+    </PokemonListWrapper>
   );
 }
