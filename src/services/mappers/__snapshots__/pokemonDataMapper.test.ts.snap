@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pokemonDataMapper mapApiToPokemon works correctly 1`] = `
+Object {
+  "baseExperience": 64,
+  "height": 7,
+  "id": 1,
+  "isDefault": true,
+  "locationAreaEncounters": "https://pokeapi.co/api/v2/pokemon/1/encounters",
+  "name": "bulbasaur",
+  "order": 1,
+  "sprites": Object {
+    "backDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png",
+    "backShiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png",
+    "frontDefault": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+    "frontShiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png",
+  },
+  "weight": 69,
+}
+`;

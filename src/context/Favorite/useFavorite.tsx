@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 
-type ContextType = {
+export type ContextType = {
   pokemons: Array<string>;
   toggleFavorite: (pokemon: string) => void;
 };
