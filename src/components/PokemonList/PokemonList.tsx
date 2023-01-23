@@ -3,18 +3,21 @@ import { usePokemonList } from '../../hooks/usePokemonList';
 import {
   Header,
   LogoWrapper,
-  PokemonItem,
+  PokemonItemWrapper,
   PaginationWrapper,
+  PokemonItemTitle,
 } from './PokemonList.styles';
 
 import logo from '../../assets/logo.png';
 import { Input } from '../Form/Input/Input';
 import { Pagination } from '../Pagination/Pagination';
+import { PokemonInfo } from '../PokemonInfo/PokemonInfo';
 
 export const ROWS_PER_PAGE = 20;
 
 export function PokemonList() {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [expandedItem, setExpandedItem] = useState<null | number>(null);
   const { pokemonResult, isLoading, hasError, fetchPokemons } =
     usePokemonList();
 
@@ -26,9 +29,12 @@ export function PokemonList() {
     async function getPokemons() {
       try {
         await fetchPokemons(ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE);
-      } catch (error) {}
+      } catch {
+        // doSomething
+      }
     }
 
+    setExpandedItem(null);
     getPokemons();
   }, [currentPage, fetchPokemons]);
 
@@ -55,10 +61,13 @@ export function PokemonList() {
         </div>
       </Header>
       <div>
-        {pokemonResult.results.map((pokemonResult) => (
-          <PokemonItem key={pokemonResult.name}>
-            {pokemonResult.name}
-          </PokemonItem>
+        {pokemonResult.results.map((pokemonResult, index) => (
+          <PokemonItemWrapper key={pokemonResult.name} onClick={() => setExpandedItem(index)}>
+            <PokemonItemTitle>
+              {pokemonResult.name}
+            </PokemonItemTitle>
+            {expandedItem === index && <PokemonInfo pokemonName={pokemonResult.name} />}
+          </PokemonItemWrapper>
         ))}
         <PaginationWrapper>
           <Pagination

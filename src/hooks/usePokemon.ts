@@ -1,38 +1,36 @@
 import { useCallback, useState } from 'react';
-import { getPokemons } from '../services/pokemonService';
-import { PokemonResults } from '../types/Pokemon';
+import { getPokemonByName } from '../services/pokemonService';
+import { Pokemon } from '../types/Pokemon';
 import { RequestStatus } from '../types/Request';
 
-export function usePokemonList() {
-  const [pokemonResult, setPokemonResult] = useState<PokemonResults | null>()
+export function usePokemon() {
+  const [pokemon, setPokemon] = useState<null | Pokemon>()
   const [pokemonStatus, setPokemonStatus] = useState<RequestStatus>(RequestStatus.Initial)
 
   const isLoading = pokemonStatus === RequestStatus.Pending
   const hasError = pokemonStatus === RequestStatus.Error
   const isCompleted = pokemonStatus === RequestStatus.Success
 
-  const fetchPokemons = useCallback(async (limit: number = 20, offset: number = 0) => {
+  const fetchPokemonByName = useCallback(async (name: string) => {
     setPokemonStatus(RequestStatus.Pending)
 
     try {
-      const pokemonListResult = await getPokemons(limit, offset)
-      
-      setPokemonResult(pokemonListResult)
+      const pokemonResult = await getPokemonByName(name)
+
+      setPokemon(pokemonResult)
       setPokemonStatus(RequestStatus.Success)
     } catch (error) {
       setPokemonStatus(RequestStatus.Error)
 
       throw error
     }
-
   }, [])
 
   return {
-    pokemonResult,
-    pokemonStatus,
+    pokemon,
     isLoading,
     hasError,
     isCompleted,
-    fetchPokemons,
+    fetchPokemonByName,
   }
 }
