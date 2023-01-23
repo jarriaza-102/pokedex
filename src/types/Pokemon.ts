@@ -6,7 +6,7 @@ export type PokemonResult = {
 export type PokemonResults = {
   count: number
   next?: string
-  previous?: string
+  previous: string | null
   results?: Array<PokemonResult>
 }
 

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { mapApiToPokemon, RawPokemon } from '../components/mappers/pokemonDataMapper'
+import { mapApiToPokemon, RawPokemon } from './mappers/pokemonDataMapper'
 import { Pokemon, PokemonResults } from '../types/Pokemon'
 
 const API_URL = 'https://pokeapi.co/api/v2'
