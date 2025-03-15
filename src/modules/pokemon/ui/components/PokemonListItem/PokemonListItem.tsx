@@ -3,16 +3,19 @@
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
 import { pokemonService } from '@/modules/pokemon/infra/factories/pokemon-service.factory';
 import Image from 'next/image';
-import useSWR from 'swr';
+import { useQuery } from '@tanstack/react-query';
 
 export type PokemonListItemProps = {
   pokemonName: string;
 };
 
 export function PokemonListItem({ pokemonName }: PokemonListItemProps) {
-  const { data } = useSWR(['pokemon', pokemonName], () => pokemonService.getPokemon(pokemonName), {
+  const { data } = useQuery({
+    queryKey: ['pokemon', pokemonName],
+    queryFn: () => pokemonService.getPokemon(pokemonName),
     suspense: true,
   });
+  const pokemonData = data!;
 
   return (
     <Card>
@@ -34,8 +37,7 @@ export function PokemonListItem({ pokemonName }: PokemonListItemProps) {
               textTransform: 'capitalize',
             }}
           >
-            {/*{pokemonName}*/}
-            {data?.name}
+            {pokemonData.name}
           </Typography>
         </CardContent>
       </CardActionArea>

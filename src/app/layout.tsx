@@ -5,6 +5,7 @@ import { Container } from '@mui/material';
 
 import '@/assets/styles/global.css';
 import { Header } from '@/modules/common/ui/components/Header';
+import { QueryProvider } from '@/modules/common/ui/components/QueryProvider/QueryProvider';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -23,10 +24,12 @@ export default function RootLayout({
         <title>Pokedex</title>
       </head>
       <body>
-        <AppRouterCacheProvider>
-          <Header />
-          <Container>{children}</Container>
-        </AppRouterCacheProvider>
+        <QueryProvider>
+          <AppRouterCacheProvider>
+            <Header />
+            <Container>{children}</Container>
+          </AppRouterCacheProvider>
+        </QueryProvider>
       </body>
     </html>
   );

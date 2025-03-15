@@ -23,6 +23,9 @@ dependencies:
   '@mui/material-nextjs':
     specifier: ^6.4.3
     version: 6.4.3(@emotion/cache@11.14.0)(@emotion/react@11.14.0)(@types/react@19.0.10)(next@15.2.2)(react@19.0.0)
+  '@tanstack/react-query':
+    specifier: ^4.36.1
+    version: 4.36.1(react-dom@19.0.0)(react@19.0.0)
   axios:
     specifier: ^1.8.3
     version: 1.8.3
@@ -1047,6 +1050,28 @@ packages:
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
     dependencies:
       tslib: 2.8.1
+    dev: false
+
+  /@tanstack/query-core@4.36.1:
+    resolution: {integrity: sha512-DJSilV5+ytBP1FbFcEJovv4rnnm/CokuVvrBEtW/Va9DvuJ3HksbXUJEpI0aV1KtuL4ZoO9AVE6PyNLzF7tLeA==}
+    dev: false
+
+  /@tanstack/react-query@4.36.1(react-dom@19.0.0)(react@19.0.0):
+    resolution: {integrity: sha512-y7ySVHFyyQblPl3J3eQBWpXZkliroki3ARnBKsdJchlgt7yJLRDUcf4B8soufgiYt3pEQIkBWBx1N9/ZPIeUWw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@tanstack/query-core': 4.36.1
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+      use-sync-external-store: 1.4.0(react@19.0.0)
     dev: false
 
   /@tybys/wasm-util@0.9.0:
