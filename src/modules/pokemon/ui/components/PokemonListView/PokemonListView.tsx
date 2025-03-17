@@ -6,11 +6,13 @@ import {
   POKEMON_PAGE_LIMIT,
   PokemonPage,
 } from '@/modules/pokemon/domain/pokemon-page';
-import { SearchBar } from '@/modules/pokemon/ui/components/SearchBar';
 import { Stack } from '@mui/material';
 import { Pagination } from '@/modules/common/ui/components/Pagination';
 import { getPokemonList } from '@/modules/pokemon/infra/actions/pokemon.actions';
 import { useMemo, useState } from 'react';
+import { Pokemon } from '@/modules/pokemon/domain/pokemon';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/modules/common/domain/routes';
 
 export type PokemonListViewProps = {
   pokemonPage: PokemonPage;
@@ -18,6 +20,8 @@ export type PokemonListViewProps = {
 
 export function PokemonListView({ pokemonPage }: PokemonListViewProps) {
   const [currentPage, setCurrentPage] = useState<PokemonPage>(pokemonPage);
+  const router = useRouter();
+
   const pageCount = useMemo(() => getPageCount(currentPage), [currentPage]);
 
   async function handlePageChange(page: number) {
@@ -26,11 +30,13 @@ export function PokemonListView({ pokemonPage }: PokemonListViewProps) {
     setCurrentPage(newPokemonPage);
   }
 
+  function handlePokemonClick({ name }: Pokemon) {
+    router.push(ROUTES.pokemon(name));
+  }
+
   return (
     <Stack spacing={1}>
-      <h1>Hello world</h1>
-      <SearchBar />
-      <PokemonList pokemonList={currentPage.results} />
+      <PokemonList pokemonList={currentPage.results} onClick={handlePokemonClick} />
       <Pagination pageCount={pageCount} onPageChange={handlePageChange} />
     </Stack>
   );

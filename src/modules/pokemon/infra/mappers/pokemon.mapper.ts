@@ -25,8 +25,12 @@ type RawSprites = {
   front_shiny_female: string | null;
 };
 
+type RawMove = {
+  move: RawNameUrl;
+};
+
 export type RawPokemon = {
-  moves: Array<RawNameUrl>;
+  moves: Array<RawMove>;
   types: Array<RawType>;
   sprites: RawSprites;
   base_experience: number;
@@ -73,8 +77,12 @@ function mapToPokemonType(rawTypes: Array<RawType>): Array<PokemonType> {
   }));
 }
 
-function mapToPokemonMoves(rawMoves: Array<RawNameUrl>): Array<PokemonNameUrl> {
-  return rawMoves.map(mapToPokemonNameUrl);
+function mapToPokemonMoves(rawMoves: Array<RawMove>): Array<PokemonNameUrl> {
+  return rawMoves.map(({ move }) => mapToPokemonNameUrl(move));
+}
+
+function mapToPokemonForms(rawForms: Array<RawNameUrl>): Array<PokemonNameUrl> {
+  return rawForms.map(mapToPokemonNameUrl);
 }
 
 export function mapRawPokemonToPokemon(rawPokemon: RawPokemon): Pokemon {

@@ -9,7 +9,7 @@ export type PokemonPage = {
   results: Array<PokemonListItem>;
 };
 
-export const POKEMON_PAGE_LIMIT = 20;
+export const POKEMON_PAGE_LIMIT = 21;
 
 export function getPageCount(pokemonPage: PokemonPage) {
   return Math.ceil(pokemonPage.count / POKEMON_PAGE_LIMIT);

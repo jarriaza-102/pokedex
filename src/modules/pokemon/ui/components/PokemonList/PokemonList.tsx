@@ -1,20 +1,20 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React from 'react';
 import Grid from '@mui/material/Grid2';
 
 import { PokemonListItem as PokemonListItemType } from '@/modules/pokemon/domain/pokemon-page';
 import { PokemonListItem } from '../PokemonListItem';
-import { ErrorBoundary } from 'react-error-boundary';
-import { Card } from '@mui/material';
+import { Pokemon } from '@/modules/pokemon/domain/pokemon';
 
 export type PokemonListProps = {
   pokemonList: Array<PokemonListItemType>;
+  onClick: (pokemon: Pokemon) => void;
 };
 
-export function PokemonList({ pokemonList }: PokemonListProps) {
+export function PokemonList({ pokemonList, onClick }: PokemonListProps) {
   return (
-    <Grid spacing={1} container>
+    <Grid spacing={1} alignItems="stretch" container>
       {pokemonList.map((pokemon) => (
         <Grid
           key={pokemon.name}
@@ -23,11 +23,7 @@ export function PokemonList({ pokemonList }: PokemonListProps) {
             sm: 12,
           }}
         >
-          <ErrorBoundary fallback={<h2>Could not fetch pokemon.</h2>}>
-            <Suspense fallback={<Card>Loading...</Card>}>
-              <PokemonListItem pokemonName={pokemon.name} />
-            </Suspense>
-          </ErrorBoundary>
+          <PokemonListItem pokemonName={pokemon.name} onClick={onClick} />
         </Grid>
       ))}
     </Grid>

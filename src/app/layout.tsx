@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import { Container } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 
 import '@/assets/styles/global.css';
 import { Header } from '@/modules/common/ui/components/Header';
@@ -26,8 +26,12 @@ export default function RootLayout({
       <body>
         <QueryProvider>
           <AppRouterCacheProvider>
-            <Header />
-            <Container>{children}</Container>
+            <Stack spacing={2} alignItems="center">
+              <Stack width="100%">
+                <Header />
+              </Stack>
+              <Container>{children}</Container>
+            </Stack>
           </AppRouterCacheProvider>
         </QueryProvider>
       </body>

@@ -9,12 +9,10 @@ import {
 import { POKEMON_PAGE_LIMIT, PokemonPage } from '@/modules/pokemon/domain/pokemon-page';
 
 export class PokemonService {
-  private readonly basePathname = '/pokemon';
-
   constructor(private readonly httpService: HttpService) {}
 
   async getPokemonList(offset: number = 0, limit = POKEMON_PAGE_LIMIT): Promise<PokemonPage> {
-    const data = await this.httpService.get<RawPokemonPage>(this.basePathname, {
+    const data = await this.httpService.get<RawPokemonPage>('/pokemon', {
       params: {
         offset,
         limit,
@@ -25,12 +23,12 @@ export class PokemonService {
   }
 
   async getPokemon(pokemonName: string): Promise<Pokemon> {
-    const data = await this.httpService.get<RawPokemon>(`${this.basePathname}/${pokemonName}`);
-
-    return new Promise((resolve, reject) => {
-      setTimeout(() => resolve(mapRawPokemonToPokemon(data)), 1500);
-    });
+    const data = await this.httpService.get<RawPokemon>(`pokemon/${pokemonName}`);
 
     return mapRawPokemonToPokemon(data);
+  }
+
+  async getPokemonMove(pokemonMove: string): Promise<any> {
+    await this.httpService.get<RawPokemon>(`/move/${pokemonMove}`);
   }
 }
