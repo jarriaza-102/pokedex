@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { CardActionArea, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 import { pokemonService } from '@/modules/pokemon/infra/factories/pokemon-service.factory';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
@@ -17,6 +9,7 @@ import { PokemonListItemText } from '@/modules/pokemon/ui/components/PokemonList
 import { PokemonListItemSkeleton } from '@/modules/pokemon/ui/components/PokemonListItem/PokemonListItemSkeleton';
 import { AsyncLoader, AsyncLoaderError } from '@/modules/common/ui/components/AsyncLoader';
 import { Pokemon } from '@/modules/pokemon/domain/pokemon';
+import { Card } from '@/modules/common/ui/components/Card';
 
 export type PokemonListItemProps = {
   pokemonName: string;
@@ -49,12 +42,7 @@ export function PokemonListItem({ pokemonName, onClick }: PokemonListItemProps) 
   }
 
   return (
-    <Card
-      sx={{
-        height: '100%',
-        minHeight: '200px',
-      }}
-    >
+    <Card>
       <AsyncLoader
         isLoading={isLoading}
         isError={isError}
