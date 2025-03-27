@@ -1,18 +1,9 @@
 import { Pokemon } from '@/modules/pokemon/domain/pokemon';
 import { PokemonNameUrl } from '@/modules/pokemon/domain/pokemon-name-url';
-import { PokemonType } from '@/modules/pokemon/domain/pokemon-type';
+import { PokemonAbilityItem } from '@/modules/pokemon/domain/ability/pokemon-ability';
 import { PokemonSprites } from '@/modules/pokemon/domain/pokemon-sprites';
 import { PokemonPage } from '@/modules/pokemon/domain/pokemon-page';
-
-type RawNameUrl = {
-  name: string;
-  url: string;
-};
-
-type RawType = {
-  slot: number;
-  type: RawNameUrl;
-};
+import { mapToPokemonNameUrl, RawNameUrl } from '@/modules/pokemon/infra/mappers/name-url.mapper';
 
 type RawSprites = {
   back_default: string | null;
@@ -25,13 +16,14 @@ type RawSprites = {
   front_shiny_female: string | null;
 };
 
-type RawMove = {
-  move: RawNameUrl;
+type RawAbility = {
+  is_hidden: boolean;
+  slot: number;
+  ability: RawNameUrl;
 };
 
 export type RawPokemon = {
-  moves: Array<RawMove>;
-  types: Array<RawType>;
+  abilities: Array<RawAbility>;
   sprites: RawSprites;
   base_experience: number;
   height: number;
@@ -50,13 +42,6 @@ export type RawPokemonPage = {
   results: Array<RawNameUrl>;
 };
 
-function mapToPokemonNameUrl(rawNameUrl: RawNameUrl): PokemonNameUrl {
-  return {
-    name: rawNameUrl.name,
-    url: rawNameUrl.url,
-  };
-}
-
 function mapToPokemonSprites(rawSprites: RawSprites): PokemonSprites {
   return {
     backDefault: rawSprites.back_default,
@@ -70,15 +55,12 @@ function mapToPokemonSprites(rawSprites: RawSprites): PokemonSprites {
   };
 }
 
-function mapToPokemonType(rawTypes: Array<RawType>): Array<PokemonType> {
-  return rawTypes.map((rawType) => ({
-    slot: rawType.slot,
-    type: mapToPokemonNameUrl(rawType.type),
+function mapToPokemonAbility(rawAbilities: Array<RawAbility>): Array<PokemonAbilityItem> {
+  return rawAbilities.map((rawAbility) => ({
+    slot: rawAbility.slot,
+    isHidden: rawAbility.is_hidden,
+    ability: mapToPokemonNameUrl(rawAbility.ability),
   }));
-}
-
-function mapToPokemonMoves(rawMoves: Array<RawMove>): Array<PokemonNameUrl> {
-  return rawMoves.map(({ move }) => mapToPokemonNameUrl(move));
 }
 
 function mapToPokemonForms(rawForms: Array<RawNameUrl>): Array<PokemonNameUrl> {
@@ -87,8 +69,7 @@ function mapToPokemonForms(rawForms: Array<RawNameUrl>): Array<PokemonNameUrl> {
 
 export function mapRawPokemonToPokemon(rawPokemon: RawPokemon): Pokemon {
   return {
-    moves: mapToPokemonMoves(rawPokemon.moves),
-    types: mapToPokemonType(rawPokemon.types),
+    abilities: mapToPokemonAbility(rawPokemon.abilities),
     sprites: mapToPokemonSprites(rawPokemon.sprites),
     id: rawPokemon.id,
     name: rawPokemon.name,

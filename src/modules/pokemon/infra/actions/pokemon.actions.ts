@@ -10,6 +10,6 @@ export async function getPokemonByName(name: string) {
   return pokemonService.getPokemon(name);
 }
 
-export async function getPokemonMove(move: string) {
-  return pokemonService.getPokemonMove(move);
+export async function getPokemonAbility(ability: string) {
+  return pokemonService.getPokemonAbility(ability);
 }

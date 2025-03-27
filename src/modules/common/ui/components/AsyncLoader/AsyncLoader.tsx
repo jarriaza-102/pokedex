@@ -1,20 +1,18 @@
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 
-export type AsyncLoaderProps = {
+type WithChildren = {
+  children: ReactNode;
+};
+
+export type AsyncLoaderProps = WithChildren & {
   isLoading: boolean;
   isError: boolean;
   loadingState?: ReactNode;
   errorState?: ReactNode;
-  children: ReactNode;
 };
 
-export function AsyncLoader({
-  isError,
-  isLoading,
-  loadingState,
-  errorState,
-  children,
-}: AsyncLoaderProps) {
+function AsyncLoader({ isError, isLoading, loadingState, errorState, children }: AsyncLoaderProps) {
   if (isLoading) {
     return loadingState ?? <h1>Loading...</h1>;
   }
@@ -25,3 +23,15 @@ export function AsyncLoader({
 
   return children;
 }
+
+function WithSuspense({ children }: WithChildren) {
+  return (
+    <ErrorBoundary fallback={<h1>THere was an error</h1>}>
+      <Suspense fallback={<h1>Loading...</h1>}>{children}</Suspense>
+    </ErrorBoundary>
+  );
+}
+
+AsyncLoader.Suspense = WithSuspense;
+
+export { AsyncLoader };

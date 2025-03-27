@@ -7,6 +7,11 @@ import {
   RawPokemonPage,
 } from '@/modules/pokemon/infra/mappers/pokemon.mapper';
 import { POKEMON_PAGE_LIMIT, PokemonPage } from '@/modules/pokemon/domain/pokemon-page';
+import { PokemonAbility } from '@/modules/pokemon/domain/ability/pokemon-ability';
+import {
+  mapRawPokemonAbilityToPokemonAbility,
+  RawPokemonAbility,
+} from '@/modules/pokemon/infra/mappers/pokemon-ability.mapper';
 
 export class PokemonService {
   constructor(private readonly httpService: HttpService) {}
@@ -28,7 +33,9 @@ export class PokemonService {
     return mapRawPokemonToPokemon(data);
   }
 
-  async getPokemonMove(pokemonMove: string): Promise<any> {
-    await this.httpService.get<RawPokemon>(`/move/${pokemonMove}`);
+  async getPokemonAbility(pokemonAbility: string): Promise<PokemonAbility> {
+    const data = await this.httpService.get<RawPokemonAbility>(`/ability/${pokemonAbility}`);
+
+    return mapRawPokemonAbilityToPokemonAbility(data);
   }
 }

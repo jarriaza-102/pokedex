@@ -1,10 +1,8 @@
-import { PokemonNameUrl } from '@/modules/pokemon/domain/pokemon-name-url';
 import { PokemonSprites } from '@/modules/pokemon/domain/pokemon-sprites';
-import { PokemonType } from '@/modules/pokemon/domain/pokemon-type';
+import { PokemonAbilityItem } from '@/modules/pokemon/domain/ability/pokemon-ability';
 
 export type Pokemon = {
-  moves: Array<PokemonNameUrl>;
-  types: Array<PokemonType>;
+  abilities: Array<PokemonAbilityItem>;
   sprites: PokemonSprites;
   baseExperience: number;
   height: number;
